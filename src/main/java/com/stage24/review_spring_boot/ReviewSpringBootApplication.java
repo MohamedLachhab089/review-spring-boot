@@ -23,11 +23,11 @@ public class ReviewSpringBootApplication {
 		System.out.println(testing1.Hi() + " testing 1"); */
 
 
-		Testing testing = ctx.getBean("FirstTesting",Testing.class);
+		Testing testing = ctx.getBean("bean1",Testing.class);
 		System.out.println(testing.Hi() + " testing");
 		// or this one (here we add & call method's name which is "testing")
-		Testing testing1 = ctx.getBean("SecondTesting",Testing.class);
-		System.out.println(testing1.Hi() + " testing 1");
+		/*Testing testing1 = ctx.getBean(Testing.class);
+		System.out.println(testing1.Hi() + " testing 1");*/
 
 
 		System.out.println("----------------------------------------------------");
@@ -37,6 +37,8 @@ public class ReviewSpringBootApplication {
 		* java.lang.NullPointerException */
 		FirstService firstService = ctx.getBean(FirstService.class);
 		System.out.println(firstService.Message());
+//		System.out.println(firstService.getVersion());
+//		System.out.println(firstService.getOsName());
 
 
         /* after specifying your bean and choose which bean you gonna

@@ -10,9 +10,9 @@ import org.springframework.context.annotation.Primary;
 @Configuration
 public class AppConfig {
 
-    @Bean
+    @Bean("bean1")
     //@Qualifier("bean1")
-    @Primary
+    //@Primary
     public Testing FirstTesting(){
         return new Testing("First Testing");
     }

@@ -23,6 +23,9 @@ public class FirstService {
     private Testing testing;
     //private Environment env;
 
+    @Value("${my.custom.property}")
+    private String customProperty;
+
     @Value("${my.prop}")
     private String cp;
 
@@ -39,6 +42,10 @@ public class FirstService {
 
     public String getCp2() {
         return cp2;
+    }
+
+    public String getCustomProperty() {
+        return customProperty;
     }
 
     // i've used Environment just for some example here you'll see it in the main class

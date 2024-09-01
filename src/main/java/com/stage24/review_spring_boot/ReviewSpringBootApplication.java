@@ -43,6 +43,8 @@ public class ReviewSpringBootApplication {
 		System.out.println(firstService.getCp());
 		System.out.println(firstService.getCp2());
 
+		System.out.println(firstService.getCustomProperty());
+
 
         /* after specifying your bean and choose which bean you gonna
         * execute, now there's the test */

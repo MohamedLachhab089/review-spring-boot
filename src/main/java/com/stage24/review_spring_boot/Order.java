@@ -1,11 +1,14 @@
 package com.stage24.review_spring_boot;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Order {
 
+    @JsonProperty("c-name")
     private String customName;
-
+    @JsonProperty("p-name")
     private String productName;
-
+    @JsonProperty("qte")
     private int quantity;
 
     public String getCustomName() {

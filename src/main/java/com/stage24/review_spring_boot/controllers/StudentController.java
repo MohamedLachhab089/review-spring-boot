@@ -1,5 +1,7 @@
-package com.stage24.review_spring_boot;
+package com.stage24.review_spring_boot.controllers;
 
+import com.stage24.review_spring_boot.entities.Student;
+import com.stage24.review_spring_boot.repositories.StudentRepo;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,11 +10,11 @@ import java.util.List;
 /* @RestController simplifies RESTful service development by combining @Controller and
     @ResponseBody in one annotation */
 @RestController
-public class FirstController {
+public class StudentController {
 
     private final StudentRepo studentRepo;
 
-    public FirstController(StudentRepo studentRepo) {
+    public StudentController(StudentRepo studentRepo) {
         this.studentRepo = studentRepo;
     }
 

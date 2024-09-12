@@ -1,5 +1,6 @@
-package com.stage24.review_spring_boot;
+package com.stage24.review_spring_boot.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +14,16 @@ public class Student {
     @Column(unique = true, length = 20)
     private String email;
     private int age;
+
+    // the mappedBy should be the same in the other class
+    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
+    private StudentProfile studentProfile;
+    @ManyToOne
+    // it helps to avoid issues like infinite recursion when serializing objects with
+    // circular references.
+    // This annotation is typically placed on the child side of a bidirectional relationship.
+    @JsonBackReference
+    private School school;
 
     public Student() {
     }
@@ -50,5 +61,21 @@ public class Student {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public StudentProfile getStudentProfile() {
+        return studentProfile;
+    }
+
+    public void setStudentProfile(StudentProfile studentProfile) {
+        this.studentProfile = studentProfile;
+    }
+
+    public School getSchool() {
+        return school;
+    }
+
+    public void setSchool(School school) {
+        this.school = school;
     }
 }

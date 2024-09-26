@@ -19,10 +19,10 @@ public class Student {
     @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
     private StudentProfile studentProfile;
     @ManyToOne
+    @JsonBackReference
     // it helps to avoid issues like infinite recursion when serializing objects with
     // circular references.
     // This annotation is typically placed on the child side of a bidirectional relationship.
-    @JsonBackReference
     private School school;
 
     public Student() {

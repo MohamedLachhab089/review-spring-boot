@@ -1,5 +1,8 @@
 package com.stage24.review_spring_boot.controllers;
 
+import com.stage24.review_spring_boot.dtos.StudentDto;
+import com.stage24.review_spring_boot.dtos.StudentResponseDto;
+import com.stage24.review_spring_boot.entities.School;
 import com.stage24.review_spring_boot.entities.Student;
 import com.stage24.review_spring_boot.repositories.StudentRepo;
 import org.springframework.http.HttpStatus;
@@ -19,8 +22,27 @@ public class StudentController {
     }
 
     @PostMapping("/students")
-    public Student post(@RequestBody Student student) {
-        return studentRepo.save(student);
+    public StudentResponseDto post(@RequestBody StudentDto studentDto) {
+        var student = toStudent(studentDto);
+        var studentResponse = studentRepo.save(student);
+        return toStudentResponseDto(studentResponse);
+    }
+
+    private Student toStudent(StudentDto dto) {
+        var student = new Student();
+        student.setName(dto.name());
+        student.setEmail(dto.email());
+        student.setAge(dto.age());
+
+        var school = new School();
+        school.setId(dto.schoolId());
+
+        student.setSchool(school);
+        return student;
+    }
+
+    private StudentResponseDto toStudentResponseDto(Student student) {
+        return new StudentResponseDto(student.getName(), student.getEmail(), student.getAge());
     }
 
     @GetMapping("/students")

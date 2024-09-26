@@ -16,10 +16,10 @@ public class School {
     private Integer id;
     private String name;
     @OneToMany(mappedBy = "school")
+    @JsonManagedReference
     // it helps to avoid issues like infinite recursion when serializing objects with
     // circular references.
     // This annotation is typically placed on the parent side of a bidirectional relationship.
-    @JsonManagedReference
     private List<Student> students;
 
     public School() {

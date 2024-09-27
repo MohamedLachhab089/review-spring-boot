@@ -4,7 +4,9 @@ import com.stage24.review_spring_boot.dtos.StudentDto;
 import com.stage24.review_spring_boot.dtos.StudentResponseDto;
 import com.stage24.review_spring_boot.entities.School;
 import com.stage24.review_spring_boot.entities.Student;
+import com.stage24.review_spring_boot.mappers.StudentMapper;
 import com.stage24.review_spring_boot.repositories.StudentRepo;
+import com.stage24.review_spring_boot.services.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,55 +17,36 @@ import java.util.List;
 @RestController
 public class StudentController {
 
-    private final StudentRepo studentRepo;
+    private final StudentService studentService;
 
-    public StudentController(StudentRepo studentRepo) {
-        this.studentRepo = studentRepo;
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
     }
 
     @PostMapping("/students")
-    public StudentResponseDto post(@RequestBody StudentDto studentDto) {
-        var student = toStudent(studentDto);
-        var studentResponse = studentRepo.save(student);
-        return toStudentResponseDto(studentResponse);
-    }
-
-    private Student toStudent(StudentDto dto) {
-        var student = new Student();
-        student.setName(dto.name());
-        student.setEmail(dto.email());
-        student.setAge(dto.age());
-
-        var school = new School();
-        school.setId(dto.schoolId());
-
-        student.setSchool(school);
-        return student;
-    }
-
-    private StudentResponseDto toStudentResponseDto(Student student) {
-        return new StudentResponseDto(student.getName(), student.getEmail(), student.getAge());
+    public StudentResponseDto saveStudent(@RequestBody StudentDto studentDto) {
+        return studentService.saveStudent(studentDto);
     }
 
     @GetMapping("/students")
-    public List<Student> findAllStudent() {
-        return studentRepo.findAll();
+    public List<StudentResponseDto> findAllStudent() {
+        return studentService.findAllStudent();
     }
 
     @GetMapping("/students/search/{std-name}")
-    public List<Student> findStudentByName(@PathVariable("std-name") String name) {
-        return studentRepo.findAllByNameContaining(name);
+    public List<StudentResponseDto> findStudentByName(@PathVariable("std-name") String name) {
+        return studentService.findStudentByName(name);
     }
 
     @GetMapping("/students/{std-id}")
-    public Student findStudentById(@PathVariable("std-id") Integer stdId) {
-        return studentRepo.findById(stdId).orElse(null);
+    public StudentResponseDto findStudentById(@PathVariable("std-id") Integer stdId) {
+        return studentService.findStudentById(stdId);
     }
 
     @DeleteMapping("/students/{std-id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteStudentById(@PathVariable("std-id") Integer stdId) {
-        studentRepo.deleteById(stdId);
+        studentService.deleteStudentById(stdId);
     }
 
     // here if you want to check and return the student deleted

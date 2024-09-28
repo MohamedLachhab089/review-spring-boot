@@ -7,9 +7,14 @@ import com.stage24.review_spring_boot.entities.Student;
 import com.stage24.review_spring_boot.mappers.StudentMapper;
 import com.stage24.review_spring_boot.repositories.StudentRepo;
 import com.stage24.review_spring_boot.services.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /* @RestController simplifies RESTful service development by combining @Controller and
@@ -24,7 +29,7 @@ public class StudentController {
     }
 
     @PostMapping("/students")
-    public StudentResponseDto saveStudent(@RequestBody StudentDto studentDto) {
+    public StudentResponseDto saveStudent(@Valid @RequestBody StudentDto studentDto) {
         return studentService.saveStudent(studentDto);
     }
 
@@ -47,6 +52,18 @@ public class StudentController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteStudentById(@PathVariable("std-id") Integer stdId) {
         studentService.deleteStudentById(stdId);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+        // Crée une map pour stocker les erreurs sous forme de clé-valeur (champ, message d'erreur)
+        var errors = new HashMap<String, String>();
+        exception.getBindingResult().getAllErrors().forEach(error -> {
+            var fieldName = ((FieldError) error).getField();
+            var errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
     // here if you want to check and return the student deleted
